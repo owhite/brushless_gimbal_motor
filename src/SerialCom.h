@@ -44,59 +44,59 @@ t_configUnion configUnion;
 //
 //******************************************************************************
 const t_configDef PROGMEM configListPGM[] = {
-  {"gyroPitchKp",      INT32, &config.gyroPitchKp,      &initPIDs},
-  {"gyroPitchKi",      INT32, &config.gyroPitchKi,      &initPIDs},
-  {"gyroPitchKd",      INT32, &config.gyroPitchKd,      &initPIDs},
-  {"gyroRollKp",       INT32, &config.gyroRollKp,       &initPIDs},
-  {"gyroRollKi",       INT32, &config.gyroRollKi,       &initPIDs},
-  {"gyroRollKd",       INT32, &config.gyroRollKd,       &initPIDs},
+  {"gyroMotor1Kp",      INT32, &config.gyroMotor1Kp,      &initPIDs},
+  {"gyroMotor1Ki",      INT32, &config.gyroMotor1Ki,      &initPIDs},
+  {"gyroMotor1Kd",      INT32, &config.gyroMotor1Kd,      &initPIDs},
+  {"gyroMotor2Kp",       INT32, &config.gyroMotor2Kp,       &initPIDs},
+  {"gyroMotor2Ki",       INT32, &config.gyroMotor2Ki,       &initPIDs},
+  {"gyroMotor2Kd",       INT32, &config.gyroMotor2Kd,       &initPIDs},
   
-  {"angleOffsetPitch", INT16, &config.angleOffsetPitch, NULL},
-  {"angleOffsetRoll",  INT16, &config.angleOffsetRoll,  NULL},
+  {"angleOffsetMotor1", INT16, &config.angleOffsetMotor1, NULL},
+  {"angleOffsetMotor2",  INT16, &config.angleOffsetMotor2,  NULL},
   
-  {"dirMotorPitch",    INT8,  &config.dirMotorPitch,    NULL},
-  {"dirMotorRoll",     INT8,  &config.dirMotorRoll,     NULL},
-  {"motorNumberPitch", UINT8, &config.motorNumberPitch, NULL},
-  {"motorNumberRoll",  UINT8, &config.motorNumberRoll,  NULL},
-  {"maxPWMmotorPitch", UINT8, &config.maxPWMmotorPitch, NULL},
-  {"maxPWMmotorRoll",  UINT8, &config.maxPWMmotorRoll,  NULL},
+  {"dirMotorMotor1",    INT8,  &config.dirMotorMotor1,    NULL},
+  {"dirMotorMotor2",     INT8,  &config.dirMotorMotor2,     NULL},
+  {"motorNumberMotor1", UINT8, &config.motorNumberMotor1, NULL},
+  {"motorNumberMotor2",  UINT8, &config.motorNumberMotor2,  NULL},
+  {"maxPWMmotorMotor1", UINT8, &config.maxPWMmotorMotor1, NULL},
+  {"maxPWMmotorMotor2",  UINT8, &config.maxPWMmotorMotor2,  NULL},
   {"refVoltageBat",    UINT16, &config.refVoltageBat,   NULL},
   {"cutoffVoltage",    UINT16, &config.cutoffVoltage,   NULL},
   {"motorPowerScale",  BOOL,  &config.motorPowerScale,  NULL},
   
-  {"rcAbsolutePitch",  BOOL,  &config.rcAbsolutePitch,  NULL},
-  {"rcAbsoluteRoll",   BOOL,  &config.rcAbsoluteRoll,   NULL},
+  {"rcAbsoluteMotor1",  BOOL,  &config.rcAbsoluteMotor1,  NULL},
+  {"rcAbsoluteMotor2",   BOOL,  &config.rcAbsoluteMotor2,   NULL},
 
-  {"maxRCPitch",       INT8,  &config.maxRCPitch,       NULL},
-  {"maxRCRoll",        INT8,  &config.maxRCRoll,        NULL},
-  {"minRCPitch",       INT8,  &config.minRCPitch,       NULL},
-  {"minRCRoll",        INT8,  &config.minRCRoll,        NULL},
-  {"rcGainPitch",      INT16, &config.rcGainPitch,      NULL},
-  {"rcGainRoll",       INT16, &config.rcGainRoll,       NULL},
-  {"rcLPFPitch",       INT16, &config.rcLPFPitch,       &initRC},
-  {"rcLPFRoll",        INT16, &config.rcLPFRoll,        &initRC},
+  {"maxRCMotor1",       INT8,  &config.maxRCMotor1,       NULL},
+  {"maxRCMotor2",        INT8,  &config.maxRCMotor2,        NULL},
+  {"minRCMotor1",       INT8,  &config.minRCMotor1,       NULL},
+  {"minRCMotor2",        INT8,  &config.minRCMotor2,        NULL},
+  {"rcGainMotor1",      INT16, &config.rcGainMotor1,      NULL},
+  {"rcGainMotor2",       INT16, &config.rcGainMotor2,       NULL},
+  {"rcLPFMotor1",       INT16, &config.rcLPFMotor1,       &initRC},
+  {"rcLPFMotor2",        INT16, &config.rcLPFMotor2,        &initRC},
 
-  {"rcModePPMPitch",   BOOL,  &config.rcModePPMPitch,   &initRCPins},
-  {"rcModePPMRoll",    BOOL,  &config.rcModePPMRoll,    &initRCPins},
+  {"rcModePPMMotor1",   BOOL,  &config.rcModePPMMotor1,   &initRCPins},
+  {"rcModePPMMotor2",    BOOL,  &config.rcModePPMMotor2,    &initRCPins},
   {"rcModePPMAux",     BOOL,  &config.rcModePPMAux,     &initRCPins},
-  {"rcModePPMFpvP",    BOOL,  &config.rcModePPMFpvPitch, &initRCPins},
-  {"rcModePPMFpvR",    BOOL,  &config.rcModePPMFpvRoll, &initRCPins},
+  {"rcModePPMFpvP",    BOOL,  &config.rcModePPMFpvMotor1, &initRCPins},
+  {"rcModePPMFpvR",    BOOL,  &config.rcModePPMFpvMotor2, &initRCPins},
   
   {"rcPinModeCH0",     UINT8, &config.rcPinModeCH0,     &initRCPins},
   {"rcPinModeCH1",     UINT8, &config.rcPinModeCH1,     &initRCPins},
   {"rcPinModeCH2",     UINT8, &config.rcPinModeCH2,     &initRCPins},
   
-  {"rcChannelPitch",   INT8,  &config.rcChannelPitch,   &initRCPins},
-  {"rcChannelRoll",    INT8,  &config.rcChannelRoll,    &initRCPins},
+  {"rcChannelMotor1",   INT8,  &config.rcChannelMotor1,   &initRCPins},
+  {"rcChannelMotor2",    INT8,  &config.rcChannelMotor2,    &initRCPins},
   {"rcChannelAux",     INT8,  &config.rcChannelAux,     &initRCPins},
-  {"rcChannelFpvP",    INT8,  &config.rcChannelFpvPitch, &initRCPins},
-  {"rcChannelFpvR",    INT8,  &config.rcChannelFpvRoll,  &initRCPins},
+  {"rcChannelFpvP",    INT8,  &config.rcChannelFpvMotor1, &initRCPins},
+  {"rcChannelFpvR",    INT8,  &config.rcChannelFpvMotor2,  &initRCPins},
 
-  {"fpvGainPitch",     INT8,  &config.fpvGainPitch,     NULL},
-  {"fpvGainRoll",      INT8,  &config.fpvGainRoll,      NULL},
+  {"fpvGainMotor1",     INT8,  &config.fpvGainMotor1,     NULL},
+  {"fpvGainMotor2",      INT8,  &config.fpvGainMotor2,      NULL},
   
-  {"rcLPFPitchFpv",    INT16, &config.rcLPFPitchFpv,    &initRC},
-  {"rcLPFRollFpv",     INT16, &config.rcLPFRollFpv,     &initRC},
+  {"rcLPFMotor1Fpv",    INT16, &config.rcLPFMotor1Fpv,    &initRC},
+  {"rcLPFMotor2Fpv",     INT16, &config.rcLPFMotor2Fpv,     &initRC},
   
   {"rcMid",            INT16, &config.rcMid,            &initRCPins},
   
@@ -106,14 +106,14 @@ const t_configDef PROGMEM configListPGM[] = {
   {"enableGyro",       BOOL,  &config.enableGyro,       NULL},
   {"enableACC",        BOOL,  &config.enableACC,        NULL},
 
-  {"fpvFreezePitch",   BOOL, &config.fpvFreezePitch,    NULL},
-  {"fpvFreezeRoll",    BOOL, &config.fpvFreezeRoll,     NULL},
+  {"fpvFreezeMotor1",   BOOL, &config.fpvFreezeMotor1,    NULL},
+  {"fpvFreezeMotor2",    BOOL, &config.fpvFreezeMotor2,     NULL},
   
-  {"maxPWMfpvPitch",   UINT8, &config.maxPWMfpvPitch,   NULL},
-  {"maxPWMfpvRoll",    UINT8, &config.maxPWMfpvRoll,    NULL},
+  {"maxPWMfpvMotor1",   UINT8, &config.maxPWMfpvMotor1,   NULL},
+  {"maxPWMfpvMotor2",    UINT8, &config.maxPWMfpvMotor2,    NULL},
 
-  {"fpvSwPitch",       INT8, &config.fpvSwPitch,        NULL},
-  {"fpvSwRoll",        INT8, &config.fpvSwRoll,         NULL},
+  {"fpvSwMotor1",       INT8, &config.fpvSwMotor1,        NULL},
+  {"fpvSwMotor2",        INT8, &config.fpvSwMotor2,         NULL},
 
   {"altSwAccTime",     INT8, &config.altSwAccTime,      NULL},
   
@@ -320,8 +320,8 @@ void printHelpUsage()
   Serial.println(F("par <parName> <parValue> # general parameter read/set command"));
   Serial.println(F(" e.g."));
   Serial.println(F("   par                   # list all config parameters"));
-  Serial.println(F("   par gyroPitchKi       # list gyroPitchKi"));
-  Serial.println(F("   par gyroPitchKi 12000 # set gyroPitchKi to 12000"));
+  Serial.println(F("   par gyroMotor1Ki       # list gyroMotor1Ki"));
+  Serial.println(F("   par gyroMotor1Ki 12000 # set gyroMotor1Ki to 12000"));
   Serial.println(F(""));
   Serial.println(F("he  # print help"));
   Serial.println(F(""));

@@ -14,7 +14,6 @@
 #define DT_INT_MS (1000/MOTORUPDATE_FREQ)    // dT, integer, (ms)
 #define DT_INT_INV (MOTORUPDATE_FREQ)        // dT, integer, inverse, (Hz)
 
-
 #define POUT_FREQ 25      // rate of ACC print output in Hz, 25 Hz is default
 #define TRACE_OUT_FREQ 10 // rate of Trace Outoput in Hz, 10Hz is default 
 #define LOCK_TIME_SEC 5   // gimbal fast lock time at startup 
@@ -39,14 +38,24 @@
 #define UBAT_R2 2200.0
 #define UBAT_SCALE ( (UBAT_R1 + UBAT_R2) / UBAT_R2 )
 
+// STATES
+#define S_FLAP_UP    1
+#define S_FLAP_DOWN  2
+#define S_INIT_UP    3
+#define S_INIT_DOWN  4
+#define S_INIT_PUMP  5
+#define S_PUMP_DOWN  6
+
+// Owen stuff
+#define FLAP_RANGE 500
 
 // RC data size and channel assigment
 #define RC_DATA_SIZE  5
-#define RC_DATA_PITCH 0
-#define RC_DATA_ROLL  1
+#define RC_DATA_MOTOR1 0
+#define RC_DATA_MOTOR2  1
 #define RC_DATA_AUX   2
-#define RC_DATA_FPV_PITCH 3
-#define RC_DATA_FPV_ROLL 4
+#define RC_DATA_FPV_MOTOR1 3
+#define RC_DATA_FPV_MOTOR2 4
 
 // RC PPM pin A0, A1 or A2
 #define RC_PIN_PPM_A2

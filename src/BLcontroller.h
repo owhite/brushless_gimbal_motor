@@ -86,7 +86,7 @@ OCRxB                                                                      Outpu
 
 
 */
-void initBlController() 
+void initBlContmotor2er() 
 {
   pinMode(3, OUTPUT);
   pinMode(5, OUTPUT);
@@ -258,26 +258,26 @@ void voltageCompensation () {
   }
   
   // 44us
-  if (fpvModeFreezePitch==true) {
-    maxPWMmotorPitchScaled = config.maxPWMfpvPitch * pwmMotorScale;  // fpv freeze mode
+  if (fpvModeFreezeMotor1==true) {
+    maxPWMmotorMotor1Scaled = config.maxPWMfpvMotor1 * pwmMotorScale;  // fpv freeze mode
   } else {
-    maxPWMmotorPitchScaled = config.maxPWMmotorPitch * pwmMotorScale;
+    maxPWMmotorMotor1Scaled = config.maxPWMmotorMotor1 * pwmMotorScale;
   }
-  maxPWMmotorPitchScaled = constrain(maxPWMmotorPitchScaled, 0, 255);
+  maxPWMmotorMotor1Scaled = constrain(maxPWMmotorMotor1Scaled, 0, 255);
 
-  if (fpvModeFreezeRoll==true) {
-    maxPWMmotorRollScaled = config.maxPWMfpvRoll * pwmMotorScale; // fpv freeze mode
+  if (fpvModeFreezeMotor2==true) {
+    maxPWMmotorMotor2Scaled = config.maxPWMfpvMotor2 * pwmMotorScale; // fpv freeze mode
   } else {
-    maxPWMmotorRollScaled = config.maxPWMmotorRoll * pwmMotorScale;
+    maxPWMmotorMotor2Scaled = config.maxPWMmotorMotor2 * pwmMotorScale;
   }
-  maxPWMmotorRollScaled = constrain(maxPWMmotorRollScaled, 0, 255);
+  maxPWMmotorMotor2Scaled = constrain(maxPWMmotorMotor2Scaled, 0, 255);
   
 }
 
 
 // switch off motor power
 void motorPowerOff() {
-  MoveMotorPosSpeed(config.motorNumberPitch, 0, 0); 
-  MoveMotorPosSpeed(config.motorNumberRoll, 0, 0);
+  MoveMotorPosSpeed(config.motorNumberMotor1, 0, 0); 
+  MoveMotorPosSpeed(config.motorNumberMotor2, 0, 0);
 }
 

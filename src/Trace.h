@@ -9,8 +9,8 @@ enum traceModeType {
  TRC_IMU,
  TRC_ACC,
  TRC_GYRO,
- TRC_PID_PITCH,
- TRC_PID_ROLL,
+ TRC_PID_MOTOR1,
+ TRC_PID_MOTOR2,
  TRC_MPU,
  TRC_OAC=254,        // replaces accOutput for the moment
  TRC_ALL=255

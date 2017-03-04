@@ -1,4 +1,48 @@
-// owen change: needed to make platformio compiler happy
-extern void initMPU();
+    if (random(100) > 50) {
+      range = FLAP_RANGE * .2;
+    }
+    else {
+      range = FLAP_RANGE;
+    }
 
-extern void initIMUtc();
+  switch (state) {
+  case S_INIT_UP:
+    config.dirMotorMotor1 = -1;
+    state = S_FLAP_UP;
+    break;
+  case S_FLAP_UP:
+    motor1MotorDrive += config.dirMotorMotor1;
+    MoveMotorPosSpeed(config.motorNumberMotor1, motor1MotorDrive, maxPWMmotorMotor1Scaled); 
+    delay(250);
+    if (motor1MotorDrive < 0) {
+      state = S_INIT_DOWN;
+    }
+    break;
+  case S_INIT_DOWN:
+    config.dirMotorMotor1 = 1;
+    state = S_FLAP_DOWN;
+    break;
+  case S_FLAP_DOWN:
+    motor1MotorDrive += config.dirMotorMotor1;
+    MoveMotorPosSpeed(config.motorNumberMotor1, motor1MotorDrive, maxPWMmotorMotor1Scaled); 
+    delay(250);
+    if (motor1MotorDrive > 500) {
+      state = S_INIT_UP;
+    }
+    break;
+  default:
+    Serial.println ("Unknown state") ;
+    break;
+  }
+
+
+  if (abs(Owencount) > 250) {
+    Owendirection *= -1;
+  }
+  delay(250);
+  Owencount += Owendirection;
+
+  motor1MotorDrive = Owencount * config.dirMotorMotor1;   // motor control
+  MoveMotorPosSpeed(config.motorNumberMotor1, motor1MotorDrive, maxPWMmotorMotor1Scaled); 
+
+

@@ -1,4 +1,4 @@
-// Brushless Gimbal Controller Software by Christian Winkler and Alois Hahn (C) 2013
+// Brushless Gimbal Contmotor2er Software by Christian Winkler and Alois Hahn (C) 2013
 // Ludwig Fäerber, Alexander Rehfeld and Martin Eckart
 
 #define VERSION_EEPROM 15 // change this number when eeprom data structure has changed
@@ -23,13 +23,15 @@ SerialCommand sCmd;     // Create SerialCommand object
 #include "BLcontroller.h"         // Motor Movement Functions and Timer Config
 #include "SerialCom.h"            // Serial Protocol for Configuration and Communication
 
-int Owencount = 0;
-int Owendirection = 1;
-
 /**********************************************/
 /* Initialization                             */
 /**********************************************/
+int Owencount = 0;
+int Owendirection = 1;
+
 void setup() {
+
+  state = S_INIT_UP;
 
   LEDPIN_PINMODE
   
@@ -46,8 +48,8 @@ void setup() {
   // Set Serial Protocol Commands
   setSerialProtocol();
 
-  // Init BL Controller
-  initBlController();
+  // Init BL Contmotor2er
+  initBlContmotor2er();
 
   // Init Sinus Arrays
   initMotorStuff();
@@ -72,6 +74,8 @@ void setup() {
   // Init RC-Input
   initRCPins();
 
+  maxPWMmotorMotor1Scaled = 40;
+
   LEDPIN_OFF
   CH2_OFF
   CH3_OFF
@@ -79,7 +83,7 @@ void setup() {
 }
 
 /************************/
-/* PID Controller       */
+/* PID Contmotor2er       */
 /************************/
 int32_t ComputePID(int32_t DTms, int32_t DTinv, int32_t in, int32_t setPoint, int32_t *errorSum, int32_t *errorOld, int32_t Kp, int16_t Ki, int32_t Kd)
 {
@@ -103,52 +107,69 @@ int32_t ComputePID(int32_t DTms, int32_t DTinv, int32_t in, int32_t setPoint, in
 /* Main Loop                                  */
 /**********************************************/
 void loop() { 
-  int32_t pitchPIDVal;
-  int32_t rollPIDVal;
   
-  static char pOutCnt = 0;
-  static char tOutCnt = 0;
-  static char tOutCntSub = 0;
-  static int stateCount = 0;
-  static uint8_t ledBlinkCnt = 0;
-  static uint8_t ledBlinkOnTime = 10;
-  static uint8_t ledBlinkPeriod = 20;
+  int pumpNum = 0;
+  int pumpCount = 0;
 
-  CH2_ON
-
-  // ComputePID variables (ALL int32_t)
-  // DTms  ... sample period (ms)
-  // DTinv ... sample frequency (Hz), inverse of DT (just to avoid division)
-  // input
-  // setPoint
-  // errorSum
-  // errorOld
-  // Kp
-  // Ki
-  // Kd
-
-  // pitch PID
-  // pitchPIDVal = ComputePID(DT_INT_MS, DT_INT_INV, 0, 0, &pitchErrorSum, &pitchErrorOld, pitchPIDpar.Kp, pitchPIDpar.Ki, pitchPIDpar.Kd);
-  if (abs(Owencount) > 250) {
-    Owendirection *= -1;
+  switch (state) {
+  case S_INIT_UP:
+    range = FLAP_RANGE;
+    config.dirMotorMotor1 = -1;
+    state = S_FLAP_UP;
+    break;
+  case S_FLAP_UP:
+    motor1MotorDrive += config.dirMotorMotor1;
+    MoveMotorPosSpeed(config.motorNumberMotor1, motor1MotorDrive, maxPWMmotorMotor1Scaled); 
+    delay(250);
+    if (motor1MotorDrive < 0) {
+      state = S_INIT_DOWN;
+    }
+    break;
+  case S_INIT_DOWN:
+    range = FLAP_RANGE;
+    if (random(100) > 50) {
+      state = S_INIT_PUMP;
+      break;
+    }
+    config.dirMotorMotor1 = 1;
+    state = S_FLAP_DOWN;
+    break;
+  case S_FLAP_DOWN:
+    motor1MotorDrive += config.dirMotorMotor1;
+    MoveMotorPosSpeed(config.motorNumberMotor1, motor1MotorDrive, maxPWMmotorMotor1Scaled); 
+    delay(250);
+    if (motor1MotorDrive > range) {
+      if (pumpCount > 0) {
+	range = FLAP_RANGE * .3;
+	config.dirMotorMotor1 = 1;
+	state = S_PUMP_DOWN;
+      }
+      else {
+	state = S_INIT_UP;
+      }
+    }
+    pumpCount--;
+    break;
+  case S_INIT_PUMP:
+    range = FLAP_RANGE * .3;
+    pumpNum = 4;
+    pumpCount = 0;
+    config.dirMotorMotor1 = 1;
+    state = S_PUMP_DOWN;
+    break;
+  case S_PUMP_DOWN:
+    motor1MotorDrive += config.dirMotorMotor1;
+    MoveMotorPosSpeed(config.motorNumberMotor1, motor1MotorDrive, maxPWMmotorMotor1Scaled); 
+    delay(250);
+    if (motor1MotorDrive > range) {
+      state = S_INIT_UP;
+    }
+    pumpCount++;
+    break;
+  default:
+    Serial.println ("Unknown state") ;
+    break;
   }
-  delay(250);
-  Owencount += Owendirection;
-  Serial.println(Owencount);
-  maxPWMmotorPitchScaled = 40;
-  // pitchMotorDrive = pitchPIDVal * config.dirMotorPitch;   // motor control
-  pitchMotorDrive = Owencount * config.dirMotorPitch;   // motor control
-  MoveMotorPosSpeed(config.motorNumberPitch, pitchMotorDrive, maxPWMmotorPitchScaled); 
-
- 
-  // roll PID
-  rollPIDVal = ComputePID(DT_INT_MS, DT_INT_INV, 0, 0, &rollErrorSum, &rollErrorOld, rollPIDpar.Kp, rollPIDpar.Ki, rollPIDpar.Kd);
-  rollMotorDrive = rollPIDVal * config.dirMotorRoll;
-  rollMotorDrive = 10000;
-  // MoveMotorPosSpeed(config.motorNumberRoll, rollMotorDrive, maxPWMmotorRollScaled);
 
 
-  sCmd.readSerial();
-
-  CH2_OFF
 }

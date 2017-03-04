@@ -30,8 +30,8 @@ void printTrace(traceModeType traceMode)
     case TRC_AUX:
       // *******  AUX  *********
       Serial.print(F(" AUX"));
-      printTrace_int(fpvModePitch || fpvModeFreezePitch);
-      printTrace_int(fpvModeRoll || fpvModeFreezeRoll);
+      printTrace_int(fpvModeMotor1 || fpvModeFreezeMotor1);
+      printTrace_int(fpvModeMotor2 || fpvModeFreezeMotor2);
       printTrace_int(altModeAccTime);
       break;
       
@@ -41,8 +41,8 @@ void printTrace(traceModeType traceMode)
       printTrace_float(EstG.V.X);
       printTrace_float(EstG.V.Y);
       printTrace_float(EstG.V.Z);
-      printTrace_int(angle[ROLL]);
-      printTrace_int(angle[PITCH]);  
+      printTrace_int(angle[MOTOR2]);
+      printTrace_int(angle[MOTOR1]);  
       break;
 
     case TRC_GYRO:
@@ -66,31 +66,31 @@ void printTrace(traceModeType traceMode)
       printTrace_int((int)accMag); 
       break;
 
-    case TRC_PID_PITCH:
-      // *******  PID Pitch  *********
-      Serial.print(F(" PID_PITCH"));
-      printTrace_float(pitchAngleSet);
-      printTrace_int(angle[PITCH]);
-      printTrace_int(pitchMotorDrive);
-      printTrace_float((pitchAngleSet*1000-angle[PITCH])*0.001); // PID error
-      printTrace_int(pitchErrorSum);
+    case TRC_PID_MOTOR1:
+      // *******  PID Motor1  *********
+      Serial.print(F(" PID_MOTOR1"));
+      printTrace_float(motor1AngleSet);
+      printTrace_int(angle[MOTOR1]);
+      printTrace_int(motor1MotorDrive);
+      printTrace_float((motor1AngleSet*1000-angle[MOTOR1])*0.001); // PID error
+      printTrace_int(motor1ErrorSum);
       break;
 
-    case TRC_PID_ROLL:
-      // *******  PID Roll  *********
-      Serial.print(F(" PID_ROLL"));
-      printTrace_float(rollAngleSet);
-      printTrace_int(angle[ROLL]);
-      printTrace_int(rollMotorDrive);
-      printTrace_float((rollAngleSet*1000-angle[ROLL])*0.001); // PID error
-      printTrace_int(rollErrorSum);
+    case TRC_PID_MOTOR2:
+      // *******  PID Motor2  *********
+      Serial.print(F(" PID_MOTOR2"));
+      printTrace_float(motor2AngleSet);
+      printTrace_int(angle[MOTOR2]);
+      printTrace_int(motor2MotorDrive);
+      printTrace_float((motor2AngleSet*1000-angle[MOTOR2])*0.001); // PID error
+      printTrace_int(motor2ErrorSum);
       break;
 
     case TRC_OAC:
       // *******  OAC mode 2 (replaces oac/acc mode)  *********
       Serial.print(F(" ACC2"));
-      printTrace_float(angle[PITCH]);
-      printTrace_float(angle[ROLL]);
+      printTrace_float(angle[MOTOR1]);
+      printTrace_float(angle[MOTOR2]);
       break;
             
     default:

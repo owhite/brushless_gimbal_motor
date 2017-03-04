@@ -5,11 +5,11 @@
 // init RC config variables
 void initRC() 
 {
-  rcLPFPitch_tc = LOWPASS_K_FLOAT(config.rcLPFPitch*0.1*0.333);
-  rcLPFRoll_tc = LOWPASS_K_FLOAT(config.rcLPFRoll*0.1*0.333);
+  rcLPFMotor1_tc = LOWPASS_K_FLOAT(config.rcLPFMotor1*0.1*0.333);
+  rcLPFMotor2_tc = LOWPASS_K_FLOAT(config.rcLPFMotor2*0.1*0.333);
 
-  rcLPFPitchFpv_tc = LOWPASS_K_FLOAT(config.rcLPFPitchFpv*0.1*0.333);
-  rcLPFRollFpv_tc = LOWPASS_K_FLOAT(config.rcLPFRollFpv*0.1*0.333);
+  rcLPFMotor1Fpv_tc = LOWPASS_K_FLOAT(config.rcLPFMotor1Fpv*0.1*0.333);
+  rcLPFMotor2Fpv_tc = LOWPASS_K_FLOAT(config.rcLPFMotor2Fpv*0.1*0.333);
 }
 
 
@@ -65,16 +65,16 @@ inline void intDecodePPM( uint32_t microsIsrEnter )
   else if (channel_idx < RC_PPM_RX_MAX_CHANNELS)
   {
     rcData_t* data = 0; 
-    if ((channel_idx == config.rcChannelPitch) && (config.rcModePPMPitch)) 
-      data = &rcData[RC_DATA_PITCH];
-    else if ((channel_idx == config.rcChannelRoll) && (config.rcModePPMRoll))
-      data = &rcData[RC_DATA_ROLL];
+    if ((channel_idx == config.rcChannelMotor1) && (config.rcModePPMMotor1)) 
+      data = &rcData[RC_DATA_MOTOR1];
+    else if ((channel_idx == config.rcChannelMotor2) && (config.rcModePPMMotor2))
+      data = &rcData[RC_DATA_MOTOR2];
     else if ((channel_idx == config.rcChannelAux) && (config.rcModePPMAux))
       data = &rcData[RC_DATA_AUX];
-    else if ((channel_idx == config.rcChannelFpvPitch) && (config.rcModePPMFpvPitch))
-      data = &rcData[RC_DATA_FPV_PITCH];
-    else if ((channel_idx == config.rcChannelFpvRoll) && (config.rcModePPMFpvRoll))
-      data = &rcData[RC_DATA_FPV_ROLL];
+    else if ((channel_idx == config.rcChannelFpvMotor1) && (config.rcModePPMFpvMotor1))
+      data = &rcData[RC_DATA_FPV_MOTOR1];
+    else if ((channel_idx == config.rcChannelFpvMotor2) && (config.rcModePPMFpvMotor2))
+      data = &rcData[RC_DATA_FPV_MOTOR2];
     if (data)
     {
       data->microsLastUpdate = microsIsrEnter;    
@@ -104,20 +104,20 @@ void intDecodePWM_Ch0()
   // PWM: 6 / 10 us (min/max)
   // PPM: 0.5 / 12 us (min/max)
 #ifdef RC_PIN_PPM_A2
-  if (config.rcModePPMPitch || config.rcModePPMRoll || config.rcModePPMAux || config.rcModePPMFpvPitch || config.rcModePPMFpvRoll) {
+  if (config.rcModePPMMotor1 || config.rcModePPMMotor2 || config.rcModePPMAux || config.rcModePPMFpvMotor1 || config.rcModePPMFpvMotor2) {
     if (risingEdge) intDecodePPM(microsIsrEnter);
   } else {
 #endif
-    if ((config.rcChannelRoll == 0) && (config.rcModePPMRoll == false))
-      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_ROLL]);
-    if ((config.rcChannelPitch == 0) && (config.rcModePPMPitch == false))
-      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_PITCH]);
+    if ((config.rcChannelMotor2 == 0) && (config.rcModePPMMotor2 == false))
+      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_MOTOR2]);
+    if ((config.rcChannelMotor1 == 0) && (config.rcModePPMMotor1 == false))
+      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_MOTOR1]);
     if ((config.rcChannelAux == 0) && (config.rcModePPMAux == false))
       decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_AUX]);
-    if ((config.rcChannelFpvPitch == 0) && (config.rcModePPMFpvPitch == false))
-      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_FPV_PITCH]);
-    if ((config.rcChannelFpvRoll == 0) && (config.rcModePPMFpvRoll == false))
-      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_FPV_ROLL]);
+    if ((config.rcChannelFpvMotor1 == 0) && (config.rcModePPMFpvMotor1 == false))
+      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_FPV_MOTOR1]);
+    if ((config.rcChannelFpvMotor2 == 0) && (config.rcModePPMFpvMotor2 == false))
+      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_FPV_MOTOR2]);
 #ifdef RC_PIN_PPM_A2
   }
 #endif  
@@ -131,20 +131,20 @@ void intDecodePWM_Ch1()
   
 
 #ifdef RC_PIN_PPM_A1
-  if (config.rcModePPMPitch || config.rcModePPMRoll || config.rcModePPMAux || config.rcModePPMFpvPitch || config.rcModePPMFpvRoll) {
+  if (config.rcModePPMMotor1 || config.rcModePPMMotor2 || config.rcModePPMAux || config.rcModePPMFpvMotor1 || config.rcModePPMFpvMotor2) {
     if (risingEdge) intDecodePPM(microsIsrEnter);
   } else {
 #endif  
-    if ((config.rcChannelRoll == 1) && (config.rcModePPMRoll == false))
-      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_ROLL]);
-    if ((config.rcChannelPitch == 1) && (config.rcModePPMPitch == false))
-      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_PITCH]);
+    if ((config.rcChannelMotor2 == 1) && (config.rcModePPMMotor2 == false))
+      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_MOTOR2]);
+    if ((config.rcChannelMotor1 == 1) && (config.rcModePPMMotor1 == false))
+      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_MOTOR1]);
     if ((config.rcChannelAux == 1) && (config.rcModePPMAux == false))
       decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_AUX]);
-    if ((config.rcChannelFpvPitch == 1) && (config.rcModePPMFpvPitch == false))
-      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_FPV_PITCH]);
-    if ((config.rcChannelFpvRoll == 1) && (config.rcModePPMFpvRoll == false))
-      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_FPV_ROLL]);
+    if ((config.rcChannelFpvMotor1 == 1) && (config.rcModePPMFpvMotor1 == false))
+      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_FPV_MOTOR1]);
+    if ((config.rcChannelFpvMotor2 == 1) && (config.rcModePPMFpvMotor2 == false))
+      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_FPV_MOTOR2]);
 #ifdef RC_PIN_PPM_A1
   }
 #endif  
@@ -157,20 +157,20 @@ void intDecodePWM_Ch2()
   bool risingEdge = PCintPort::pinState==HIGH ? true : false;
   
 #ifdef RC_PIN_PPM_A0  
-  if (config.rcModePPMPitch || config.rcModePPMRoll || config.rcModePPMAux || config.rcModePPMFpvPitch || config.rcModePPMFpvRoll) {  {
+  if (config.rcModePPMMotor1 || config.rcModePPMMotor2 || config.rcModePPMAux || config.rcModePPMFpvMotor1 || config.rcModePPMFpvMotor2) {  {
     if (risingEdge) intDecodePPM(microsIsrEnter);
   } else {
 #endif  
-    if ((config.rcChannelRoll == 2) && (config.rcModePPMRoll == false))
-      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_ROLL]);
-    if ((config.rcChannelPitch == 2) && (config.rcModePPMPitch == false))
-      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_PITCH]);
+    if ((config.rcChannelMotor2 == 2) && (config.rcModePPMMotor2 == false))
+      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_MOTOR2]);
+    if ((config.rcChannelMotor1 == 2) && (config.rcModePPMMotor1 == false))
+      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_MOTOR1]);
     if ((config.rcChannelAux == 2) && (config.rcModePPMAux == false))
       decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_AUX]);
-    if ((config.rcChannelFpvPitch == 2) && (config.rcModePPMFpvPitch == false))
-      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_FPV_PITCH]);
-    if ((config.rcChannelFpvRoll == 2) && (config.rcModePPMFpvRoll == false))
-      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_FPV_ROLL]);
+    if ((config.rcChannelFpvMotor1 == 2) && (config.rcModePPMFpvMotor1 == false))
+      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_FPV_MOTOR1]);
+    if ((config.rcChannelFpvMotor2 == 2) && (config.rcModePPMFpvMotor2 == false))
+      decodePWM(microsIsrEnter, risingEdge, &rcData[RC_DATA_FPV_MOTOR2]);
 #ifdef RC_PIN_PPM_A0  
   }
 #endif  
@@ -322,23 +322,23 @@ void evalRCChannelAbsolute(rcData_t* rcData, int8_t gain, int8_t rcMin, int8_t r
 }
 
 
-void evaluateRCPitch() {
-  if (fpvModePitch==true) {
-    evalRCChannelAbsolute(&rcData[RC_DATA_FPV_PITCH], config.fpvGainPitch, config.minRCPitch, config.maxRCPitch, config.rcMid);
-  } else if(config.rcAbsolutePitch==1) {
-    evalRCChannelAbsolute(&rcData[RC_DATA_PITCH], 100, config.minRCPitch, config.maxRCPitch, config.rcMid);
+void evaluateRCMotor1() {
+  if (fpvModeMotor1==true) {
+    evalRCChannelAbsolute(&rcData[RC_DATA_FPV_MOTOR1], config.fpvGainMotor1, config.minRCMotor1, config.maxRCMotor1, config.rcMid);
+  } else if(config.rcAbsoluteMotor1==1) {
+    evalRCChannelAbsolute(&rcData[RC_DATA_MOTOR1], 100, config.minRCMotor1, config.maxRCMotor1, config.rcMid);
   } else {
-    evalRCChannelProportional(&rcData[RC_DATA_PITCH], config.rcGainPitch, config.rcMid);
+    evalRCChannelProportional(&rcData[RC_DATA_MOTOR1], config.rcGainMotor1, config.rcMid);
   }
 }
   
-void evaluateRCRoll() {
-  if (fpvModeRoll==true) {
-    evalRCChannelAbsolute(&rcData[RC_DATA_FPV_ROLL ], config.fpvGainRoll, config.minRCRoll , config.maxRCRoll,  config.rcMid);
-  } else if(config.rcAbsoluteRoll==1) {
-    evalRCChannelAbsolute(&rcData[RC_DATA_ROLL ], 100, config.minRCRoll , config.maxRCRoll,  config.rcMid);
+void evaluateRCMotor2() {
+  if (fpvModeMotor2==true) {
+    evalRCChannelAbsolute(&rcData[RC_DATA_FPV_MOTOR2 ], config.fpvGainMotor2, config.minRCMotor2 , config.maxRCMotor2,  config.rcMid);
+  } else if(config.rcAbsoluteMotor2==1) {
+    evalRCChannelAbsolute(&rcData[RC_DATA_MOTOR2 ], 100, config.minRCMotor2 , config.maxRCMotor2,  config.rcMid);
   } else {
-    evalRCChannelProportional(&rcData[RC_DATA_ROLL ], config.rcGainRoll, config.rcMid);
+    evalRCChannelProportional(&rcData[RC_DATA_MOTOR2 ], config.rcGainMotor2, config.rcMid);
   }
 }
 
@@ -438,15 +438,15 @@ void decodeModeSwitches() {
   
   bool funcOn = false;
   
-  // fpv pitch
-  funcOn = decodeSWSel(config.fpvSwPitch);
-  fpvModePitch = funcOn && (config.fpvFreezePitch==false);
-  fpvModeFreezePitch = funcOn && (config.fpvFreezePitch==true);
+  // fpv motor1
+  funcOn = decodeSWSel(config.fpvSwMotor1);
+  fpvModeMotor1 = funcOn && (config.fpvFreezeMotor1==false);
+  fpvModeFreezeMotor1 = funcOn && (config.fpvFreezeMotor1==true);
   
-  // fpv roll
-  funcOn = decodeSWSel(config.fpvSwRoll);
-  fpvModeRoll = funcOn && (config.fpvFreezeRoll==false);
-  fpvModeFreezeRoll = funcOn && (config.fpvFreezeRoll==true);
+  // fpv motor2
+  funcOn = decodeSWSel(config.fpvSwMotor2);
+  fpvModeMotor2 = funcOn && (config.fpvFreezeMotor2==false);
+  fpvModeFreezeMotor2 = funcOn && (config.fpvFreezeMotor2==true);
 
   // alternate acc time
   funcOn = decodeSWSel(config.altSwAccTime);
@@ -499,10 +499,10 @@ void readRCAnalogPin(rcData_t* rcData, bool rcModePPM, uint8_t rcChannel) {
 
 void readRCAnalog() {
   
-  // pitch
-  readRCAnalogPin(&rcData[RC_DATA_PITCH], config.rcModePPMPitch, config.rcChannelPitch);
-  // roll
-  readRCAnalogPin(&rcData[RC_DATA_ROLL],  config.rcModePPMRoll,  config.rcChannelRoll);
+  // motor1
+  readRCAnalogPin(&rcData[RC_DATA_MOTOR1], config.rcModePPMMotor1, config.rcChannelMotor1);
+  // motor2
+  readRCAnalogPin(&rcData[RC_DATA_MOTOR2],  config.rcModePPMMotor2,  config.rcChannelMotor2);
   // aux
   readRCAnalogPin(&rcData[RC_DATA_AUX],  config.rcModePPMAux,    config.rcChannelAux);
 

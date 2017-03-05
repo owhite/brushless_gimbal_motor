@@ -1,3 +1,5 @@
+This is a write up I did for [this project](https://www.youtube.com/watch?v=IOxuy6EuV1g). 
+
 # brushless_gimbal_motor
 
 ## So youre wondering if you can drive a brushless gimbal motor with an arduino?
@@ -31,7 +33,7 @@ As of this writing the current location of the Martinez brushless gimbal control
 
 There are several set up guides for using the controller, one example is [here](http://www.itsqv.com/QVM/index.php?title=How_To_-_Martinez_Brushless_Gimbal_Controller_Set-Up). I have also seen several outdated pdfs. 
 
-There are also multiple locations of the orginal files for the board schematic, which made for free program, [Eagle software](http://www.autodesk.com/products/eagle/overview). I have a copy of the martinez eagle file at [this repo](https://github.com/owhite/brushless_gimbal_motor/docs/martinez.sch), and [this](https://github.com/owhite/brushless_gimbal_motor/docs/martinez.png) is a bitmap of that schematic. 
+There are also multiple locations of the orginal files for the board schematic, which made for free program, [Eagle software](http://www.autodesk.com/products/eagle/overview). I have a copy of the martinez eagle file in docs, there is also a bitmap and PDF of that schematic. 
 
 ## Okay suppose I have a gimbal controller and I want to load firmware on to it.
 
@@ -54,22 +56,17 @@ Which is fine, we can fix this. The issue is this. Because of changes to the IDE
 What this means is you need to make the following changes to some of the files. All of these changes are at the top of the file. There is no reason to go any further into the code. Be sure to put the lines ABOVE the #include statements. Okay, here we go.
 
 In BLcontroller.h, add this line to top of the file:
-```
-   extern void TIMER0_isr_emulation();
-```
+    extern void TIMER0_isr_emulation();
 
 In SerialCom.h, add these lines to the top of the file:
-```
-   extern void initIMUtc();
-   extern void initSensorOrientationDefault();
-   extern void initSensorOrientation();
-   extern void initIMU();
-```
+    extern void initIMUtc();
+    extern void initSensorOrientationDefault();
+    extern void initSensorOrientation();
+    extern void initIMU();
 
 In orientationRoutines.h, put this line on the top of the file:
-```
-   extern void initMPU();
-```
+    extern void initMPU();
+
 
 Make these changes to the files and it should be possible to upload the firmware. 
 
@@ -89,9 +86,8 @@ In my case, I didnt need most of that, so I made a bunch of changes in [this rep
  * it's wonderful code, I just wasnt using it. 
 
 One thing to note is in the call to:
-```
-MoveMotorPosSpeed(config.motorNumberMotor1, motor1MotorDrive, maxPWMmotorMotor1Scaled);
-```
+    MoveMotorPosSpeed(config.motorNumberMotor1, motor1MotorDrive, maxPWMmotorMotor1Scaled);
+
 the value maxPWMmotorMotor1Scaled is basically a power setting. This is really sweet. If you ramp that up, more amps go to the motor. This allowed me to dial it way down, to make the motor behave like gentle little wind up toy. You could ramp that thing up and drive a big tough motor.
 
 ## I dont use the Arduino IDE

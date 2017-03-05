@@ -54,16 +54,22 @@ Which is fine, we can fix this. The issue is this. Because of changes to the IDE
 What this means is you need to make the following changes to some of the files. All of these changes are at the top of the file. There is no reason to go any further into the code. Be sure to put the lines ABOVE the #include statements. Okay, here we go.
 
 * In BLcontroller.h, add this line to top of the file:
+'''
    extern void TIMER0_isr_emulation();
+'''
 
 * In SerialCom.h, add these lines to the top of the file:
+'''
    extern void initIMUtc();
    extern void initSensorOrientationDefault();
    extern void initSensorOrientation();
    extern void initIMU();
+'''
 
 In orientationRoutines.h, put this line on the top of the file:
+'''
    extern void initMPU();
+'''
 
 Make these changes to the files and it should be possible to upload the firmware. 
 
@@ -87,6 +93,10 @@ One thing to note is in the call to:
 MoveMotorPosSpeed(config.motorNumberMotor1, motor1MotorDrive, maxPWMmotorMotor1Scaled);
 ```
 the value maxPWMmotorMotor1Scaled is basically a power setting. This is really sweet. If you ramp that up, more amps go to the motor. This allowed me to dial it way down, to make the motor behave like gentle little wind up toy. You could ramp that thing up and drive a big tough motor.
+
+## I dont use the Arduino IDE
+
+Just not a fan. I'm all about command line programming. I really like [platformio](http://platformio.org/). You dont have to use it, but installing the code on the arduino will be different. 
 
 ## What did I do with it?
 

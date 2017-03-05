@@ -54,22 +54,22 @@ Which is fine, we can fix this. The issue is this. Because of changes to the IDE
 What this means is you need to make the following changes to some of the files. All of these changes are at the top of the file. There is no reason to go any further into the code. Be sure to put the lines ABOVE the #include statements. Okay, here we go.
 
 In BLcontroller.h, add this line to top of the file:
-'''
+```
    extern void TIMER0_isr_emulation();
-'''
+```
 
 In SerialCom.h, add these lines to the top of the file:
-'''
+```
    extern void initIMUtc();
    extern void initSensorOrientationDefault();
    extern void initSensorOrientation();
    extern void initIMU();
-'''
+```
 
 In orientationRoutines.h, put this line on the top of the file:
-'''
+```
    extern void initMPU();
-'''
+```
 
 Make these changes to the files and it should be possible to upload the firmware. 
 

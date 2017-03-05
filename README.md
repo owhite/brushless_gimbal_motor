@@ -96,7 +96,7 @@ the value maxPWMmotorMotor1Scaled is basically a power setting. This is really s
 
 ## I dont use the Arduino IDE
 
-Just not a fan. I'm all about command line programming. I really like [platformio](http://platformio.org/). You dont have to use it, but installing the code on the arduino will be different. 
+Just not a fan. I'm all about command line programming. I really like [platformio](http://platformio.org/). You dont have to use it. You may be able to install my code in the same way as I described above. 
 
 ## What did I do with it?
 

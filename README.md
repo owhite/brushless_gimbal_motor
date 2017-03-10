@@ -35,6 +35,8 @@ There are several set up guides for using the controller, one example is [here](
 
 There are also multiple locations of the orginal files for the board schematic, which made for free program, [Eagle software](http://www.autodesk.com/products/eagle/overview). I have a copy of the martinez eagle file in docs, there is also a bitmap and PDF of that schematic. 
 
+The board has motor drivers based on the L6234. There is a very nice description of it's operation [here](http://www.berryjam.eu/2015/04/driving-bldc-gimbals-at-super-slow-speeds-with-arduino/).
+
 ## Okay suppose I have a gimbal controller and I want to load firmware on to it.
 
 While I'm not going to talk you through the [setup](http://www.itsqv.com/QVM/index.php?title=How_To_-_Martinez_Brushless_Gimbal_Controller_Set-Up), I can help with using the Arduino IDE to load up a 2017-version of the firmware. 
